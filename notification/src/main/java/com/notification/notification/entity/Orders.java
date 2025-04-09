@@ -15,6 +15,7 @@ public class Orders {
     private double price;
     private String email;
     private String address;
+private String status;
 
     public int getOrderId() {
         return OrderId;
@@ -63,6 +64,14 @@ public class Orders {
     public void setAddress(String address) {
         this.address = address;
     }
+    public void setStatus(String status)
+    {
+        this.status = status;
+    }
+    public String getStatus()
+    {
+        return status;
+    }
 
     @Override
     public String toString() {
@@ -73,6 +82,7 @@ public class Orders {
                 ", price=" + price +
                 ", email='" + email + '\'' +
                 ", address='" + address + '\'' +
+                ",status='"+status  + '\'' +
                 '}';
     }
 }

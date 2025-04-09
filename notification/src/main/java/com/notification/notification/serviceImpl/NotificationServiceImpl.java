@@ -23,17 +23,23 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Autowired
     private JavaMailSender javaMailSender ;
-    @KafkaListener(topics = "order-confirmed",groupId = "notification-group")
+    @KafkaListener(topics = {"order-confirmed","order-cancel"},groupId = "notification-group")
     @Override
     public void sendNotification(String orderJson) throws NotificationException {
 
         Orders orders = gson.fromJson(orderJson, Orders.class);
         System.out.println("📩 New Order Received in Notification Service: " + orders);
 
+
         try{
             SimpleMailMessage sm = new SimpleMailMessage();
             sm.setTo(orders.getEmail());
-            sm.setSubject("Order placed");
+            if(orders.getStatus().equals("REFUND"))
+            {
+                sm.setSubject("Order Cancelled");
+            }else{
+                sm.setSubject("Order Placed");
+            }
             sm.setText(orderJson);
             sm.setFrom("virajmalikwade@gmail.com");
             javaMailSender.send(sm);
